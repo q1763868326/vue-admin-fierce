@@ -2,6 +2,7 @@
   <div class="home">
     <el-button type="primary" @click="send">请求</el-button>
     <div class="content"></div>
+    <div class="">124</div>
   </div>
 </template>
 
