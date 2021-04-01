@@ -14,37 +14,44 @@ const routes = [
   {
     path: '/',
     name: 'Layout',
-    component: () => import('@/layout/Layout.vue'),
+    component: () => import('@/views/layout/Layout.vue'),
     meta: {
       title: 'Layout'
     },
     children: [
       {
         path: '/dashboard',
-        name: 'DashBoard',
+        name: '仪表盘',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../views/DashBoard.vue'),
-        meta: { icon: 'mdi-home' }
+        meta: { titile: '仪表盘', icon: 'mdi-home' }
       },
       {
-        path: '/console',
-        name: 'Console',
-        component: () => import('@/views/Console.vue'),
-        meta: { title: 'Login Page', icon: 'mdi-console' }
+        path: '/appInfoList',
+        name: '我的应用',
+        component: () => import('@/views/AppInfoList.vue'),
+        meta: { title: '我的应用', icon: 'mdi-console' }
+      },
+      {
+        path: '/versionInfoList/:appId',
+        name: '我的版本',
+        component: () => import('@/views/VersionInfoList.vue'),
+        meta: { title: '我的版本', icon: 'mdi-console', display: false },
+        props: true
       },
       {
         path: '/version/upload',
         name: 'Version Upload',
         component: () => import('../views/VersionUpload.vue'),
-        meta: { icon: 'mdi-cloud-upload-outline' }
+        meta: { title: '版本上传', icon: 'mdi-cloud-upload-outline', display: false }
       },
       {
         path: '/app/create',
         name: 'App Create',
         component: () => import('../views/AppCreate.vue'),
-        meta: { icon: 'mdi-cloud-create' }
+        meta: { title: '创建应用', icon: 'mdi-console', display: false }
       }
     ]
   },

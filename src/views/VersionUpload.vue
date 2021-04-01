@@ -33,16 +33,15 @@
     <v-row class="mx-11">
       <v-card-actions>
         <v-btn class="primary" @click="upload">Upload</v-btn>
-        <v-btn class="error ml-7" @click="upload">Cancle</v-btn>
+        <v-btn class="error ml-7" @click="cancelUpload">Cancle</v-btn>
       </v-card-actions>
     </v-row>
   </v-card>
 </template>
 
 <script>
-import request from '@/utils/request'
 import { Message } from 'element-ui'
-// import qs from 'qs'
+import { versionUpload } from '@/api/versionInfo'
 
 export default {
   data: () => ({
@@ -54,25 +53,23 @@ export default {
   methods: {
     upload() {
       const formData = new FormData()
+      formData.append('appId', 1)
       formData.append('versionCode', this.versionCode)
       formData.append('versionName', this.versionName)
       formData.append('modifyContent', this.modifyContent)
-      formData.append('size', this.size)
+      formData.append('uploaderId', 1)
       formData.append('file', this.file)
-      request({
-        url: '/version/upload',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        data: formData
-      })
+      versionUpload(formData)
         .then(res => {
-          Message({ message: res.message, type: 'success', duration: 5 * 1000 })
+          Message({ message: res.message, type: 'success', duration: 3 * 1000 })
+          this.$router.back()
         })
         .catch(error => {
           console.log(error)
         })
+    },
+    cancelUpload() {
+      this.$router.back()
     }
   }
 }

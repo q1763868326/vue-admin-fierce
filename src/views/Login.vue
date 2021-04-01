@@ -18,6 +18,7 @@
             require
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="show1 = !show1"
+            @keyup.enter="Login"
           />
           <v-checkbox v-model="rememberMe" class="ml-10" label="Remember Me ?" />
         </v-form>
@@ -36,9 +37,8 @@
 </template>
 
 <script>
-import MyFooter from '@/components/MyFooter'
-import request from '@/utils/request'
-import qs from 'qs'
+import MyFooter from '@/views/components/MyFooter'
+import { login } from '@/api/userAuth'
 import { Message } from 'element-ui'
 
 export default {
@@ -59,17 +59,14 @@ export default {
         password: this.password,
         rememberMe: this.rememberMe
       }
-      request({
-        url: '/auth/login',
-        method: 'POST',
-        data: qs.stringify(data)
-      })
+      login(data)
         .then(res => {
           this.$store.commit('setToken', res.data)
-          request.get('/auth/info').then(res2 => {
-            this.$store.commit('setUserInfo', res2.data)
-            this.$router.push('/')
-          })
+          // request.get('/auth/info').then(res2 => {
+          //   this.$store.commit('setUserInfo', res2.data)
+          //   this.$router.push('/')
+          // })
+          this.$router.push('/')
         })
         .catch(err => {
           Message({ message: err.message, type: 'error', duration: 5 * 1000 })

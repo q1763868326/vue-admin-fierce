@@ -9,19 +9,19 @@
               <strong>应用平台:</strong>
             </div>
           </template>
-          <v-radio v-for="(platform, index) in platforms" :key="index" color="red" :label="platform" :value="platform" />
+          <v-radio v-for="(platform, index) in platforms" :key="index" :rules="[rules.required]" color="red" :label="platform" :value="platform" />
         </v-radio-group>
       </v-col>
       <v-col class="pb-0">
-        <v-text-field v-model="appName" class="col-5 ml-8 pa-0" outlined label="应用名称" />
+        <v-text-field v-model="appName" :rules="[rules.required]" class="col-5 ml-8 pa-0" outlined label="应用名称" />
       </v-col>
       <v-col>
-        <v-select v-model="category" class="col-5 ml-8 pa-0" outlined :items="categorys" label="应用分类" />
+        <v-select v-model="category" :rules="[rules.required]" class="col-5 ml-8 pa-0" outlined :items="categorys" label="应用分类" />
       </v-col>
     </v-row>
     <v-card-actions>
       <v-btn class="primary ml-6 mb-6" @click="createApp">Create</v-btn>
-      <v-btn class="error ml-6 mb-6" @click="createApp">Cancel</v-btn>
+      <v-btn class="error ml-6 mb-6" @click="backToPage">Cancel</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -29,10 +29,11 @@
 <script>
 import request from '@/utils/request'
 import qs from 'qs'
+import { Message } from 'element-ui'
 
 export default {
   data: () => ({
-    platforms: ['Android', 'Ios', 'Windows', 'Web', 'IOT'],
+    platforms: ['Android', 'IOS', 'Windows', 'Web', 'IOT'],
     platform: '',
     appName: '',
     category: '',
@@ -54,11 +55,17 @@ export default {
       '金融理财',
       '游戏应用',
       '其他'
-    ]
+    ],
+    rules: {
+      required: value => !!value || 'Required.'
+    }
   }),
   methods: {
     createApp() {
-      console.log(localStorage.getItem('userInfo'))
+      if (this.platform === '' || this.appName.trim === '' || this.category === '') {
+        Message({ message: '请填写完整的应用信息！', type: 'error', duration: 3 * 1000 })
+        return
+      }
       const data = {
         appName: this.appName,
         platform: this.platform,
@@ -67,12 +74,16 @@ export default {
       }
 
       request({
-        url: '/application/create',
+        url: '/application/save',
         method: 'POST',
         data: qs.stringify(data)
       }).then(res => {
-        console.log(res)
+        Message({ message: '创建成功', type: 'success', duration: 5 * 1000 })
+        this.$router.push('/appInfoList')
       })
+    },
+    backToPage() {
+      this.$router.back()
     }
   }
 }

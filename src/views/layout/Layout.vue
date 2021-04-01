@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import SideBar from '@/components/SideBar'
-import Avatars from '@/components/Avatars.vue'
+import SideBar from '@/views/components/SideBar'
+import Avatars from '@/views/components/Avatars.vue'
 export default {
   components: { SideBar, Avatars },
   data() {

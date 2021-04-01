@@ -40,11 +40,17 @@ import { removeToken } from '@/utils/auth'
 export default {
   data: () => ({
     user: {
-      initials: 'FI',
-      fullName: 'Fierce Zhu',
-      email: '1763868326@qq.com'
+      initials: '',
+      fullName: '',
+      email: ''
     }
   }),
+
+  mounted: function() {
+    this.user.initials = this.$store.getters.userInfo.username.toString().substring(0, 2)
+    this.user.fullName = this.$store.getters.userInfo.username
+    this.user.email = this.$store.getters.userInfo.email
+  },
   methods: {
     Logout() {
       console.log('Logout')

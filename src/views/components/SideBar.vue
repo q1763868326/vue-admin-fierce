@@ -52,15 +52,15 @@ export default {
       const items = this.$router.options.routes[0].children
       const list = []
       items.forEach(item => {
-        const temp = {
-          title: item.name,
-          icon: item.meta.icon || 'mdi-home',
-          path: item.path
+        if (item.meta.display == null) {
+          const temp = {
+            title: item.name,
+            icon: item.meta.icon || 'mdi-home',
+            path: item.path
+          }
+          list.push(temp)
         }
-        list.push(temp)
       })
-
-      console.log(list)
       return list
     }
   },
